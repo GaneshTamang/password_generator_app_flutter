@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:password_generator_app/custom_widgets/themed_text_from_field.dart';
 import 'package:password_generator_app/custom_widgets/themed_button.dart';
 import 'package:password_generator_app/screens/password_generator_page.dart';
-import 'package:password_generator_app/validator_reg_ex.dart';
+import 'package:password_generator_app/modules/validator_reg_ex.dart';
 
 class LoginPage extends StatelessWidget {
   final emailController = TextEditingController();

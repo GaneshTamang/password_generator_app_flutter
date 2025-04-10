@@ -20,14 +20,15 @@ class ThemedButoon extends StatelessWidget {
           color: Colors.blueAccent,
           boxShadow: [
             BoxShadow(
-                offset: Offset(0, 0),
+                offset: Offset(2.5, 3),
                 blurRadius: 5,
-                blurStyle: BlurStyle.outer),
+                blurStyle: BlurStyle.normal,
+                color: Colors.grey),
           ],
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: 60,
+            horizontal: 20,
             vertical: 15,
           ),
           child: Text(
