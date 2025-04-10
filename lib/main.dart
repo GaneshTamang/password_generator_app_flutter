@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:password_generator_app/providers/form_literals_value.dart';
-
 import 'package:password_generator_app/screens/login_page.dart';
+import 'package:password_generator_app/screens/password_generator_page.dart';
+
 import 'package:provider/provider.dart';
 
 void main() {
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
               Colors.white, // Ensures the text/icon color is visible
         ),
       ),
-      home: LoginPage(),
+      home: PasswordGeneratorPage(),
     );
   }
 }

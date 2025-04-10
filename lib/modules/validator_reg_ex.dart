@@ -4,7 +4,7 @@ String? emailValidation(String email) {
   }
   if (!RegExp(r'^[a-zA-Z0-9.%+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
       .hasMatch(email)) {
-    return "invalid email";
+    return "invalid email!! Please Enter Valid Email address";
   }
   return null;
 }

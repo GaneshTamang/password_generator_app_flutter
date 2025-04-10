@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 // ! header text styles
-TextStyle kHeadingTextStyle = TextStyle(
+TextStyle cHeadingTextStyle = TextStyle(
   fontSize: 30,
   fontWeight: FontWeight.w800,
   color: Colors.white,
 );
 // ! input decoration for passwod length
-InputDecoration kTextFieldDecoration = InputDecoration(
+InputDecoration cTextFieldDecoration = InputDecoration(
   border: OutlineInputBorder(
     borderSide: BorderSide(
       color: Colors.white, // Set the border color here
@@ -25,7 +25,7 @@ InputDecoration kTextFieldDecoration = InputDecoration(
     color: Colors.amber, // Label text color
   ),
 );
-InputDecoration kTextFormFieldDecoration = InputDecoration(
+InputDecoration cTextFormFieldDecoration = InputDecoration(
   labelText: 'Enter ID Name',
   hintText: 'abc@xyz.com',
   border: OutlineInputBorder(), // Adds a border around the field
