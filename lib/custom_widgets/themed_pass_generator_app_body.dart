@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:password_generator_app/custom_widgets/check_box_list_for_setting.dart';
 import 'package:password_generator_app/custom_widgets/themed_button.dart';
 import 'package:password_generator_app/custom_widgets/themed_card_for_pass.dart';
+
 import 'package:password_generator_app/c_constants.dart';
 import 'package:password_generator_app/modules/passowd_gen_module.dart';
+
 import 'package:password_generator_app/providers/form_literals_value.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +16,7 @@ class ThemedPassGeneratorAppBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     Map<String, Object> provideWatchValues =
         context.watch<FormLiteralsValuesProvider>().getpasswordStatus;
 
@@ -60,6 +63,7 @@ class ThemedPassGeneratorAppBody extends StatelessWidget {
                     )
                   ], //row children
                 ),
+
                 context
                             .watch<FormLiteralsValuesProvider>()
                             .getpasswordStatus['password_error'] as String ==
@@ -86,13 +90,14 @@ class ThemedPassGeneratorAppBody extends StatelessWidget {
                     : SizedBox(
                         height: MediaQuery.of(context).size.height / 1000 * 250,
                         width: MediaQuery.of(context).size.width / 4,
-                        child: Image.asset('images/write.png'),
+         child: Image.asset('images/write.png'),
                       ),
                 CheckBoxListForSetting(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ThemedButoon(
+
                       buttonName: 'Generate Password',
                       buttonFunction: () {
                         checkAndCreatePassWord(context);
@@ -105,6 +110,7 @@ class ThemedPassGeneratorAppBody extends StatelessWidget {
                               .read<FormLiteralsValuesProvider>()
                               .resetPassword();
                         }),
+
                   ],
                 )
               ], //column children for main body

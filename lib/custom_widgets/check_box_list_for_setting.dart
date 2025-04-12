@@ -24,6 +24,7 @@ class CheckBoxListForSetting extends StatelessWidget {
           ),
           Column(
             children: context
+
                 .watch<FormLiteralsValuesProvider>()
                 .getPasswordOptions
                 .entries
@@ -44,6 +45,7 @@ class CheckBoxListForSetting extends StatelessWidget {
                         value: mapEntry.value,
                         onChanged: (changedValue) {
                           context
+
                               .read<FormLiteralsValuesProvider>()
                               .changePasswordSetting(
                                   mapEntry.key, changedValue!);

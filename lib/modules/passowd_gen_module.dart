@@ -115,5 +115,6 @@ checkAndCreatePassWord(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Password already generated!')),
     );
+
   }
 }
