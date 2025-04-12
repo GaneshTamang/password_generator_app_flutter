@@ -2,64 +2,118 @@
 
 import 'dart:math';
 
-class PasswordGenerator {
-  final bool includeNumbers;
-  final bool includeCapitals;
-  final bool includeSymbols;
-  final int length;
+import 'package:flutter/material.dart';
+import 'package:password_generator_app/providers/form_literals_value.dart';
+import 'package:provider/provider.dart';
+// !generators
 
-  PasswordGenerator({
-    required this.includeNumbers,
-    required this.includeCapitals,
-    required this.includeSymbols,
-    required this.length,
-  });
+String generatePassword(
+  final bool includeSmallLetters,
+  final bool includeCapitals,
+  final bool includeNumbers,
+  final bool includeSymbols,
+  final String passwordLength,
+) {
+  final integerValueLength = int.parse(passwordLength);
+  const String lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz';
+  const String upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const String numbers = '0123456789';
+  const String symbols = '!@#\$%&()-_=+[]{}|,.<>?';
 
-  String generatePassword() {
-    const String lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz';
-    const String upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const String numbers = '0123456789';
-    const String symbols = '!@#\$%&()-_=+[]{}|,.<>?';
+  String charPool = lowerCaseLetters;
 
-    String charPool = lowerCaseLetters;
-
-    if (includeCapitals) {
-      charPool += upperCaseLetters;
-    }
-    if (includeNumbers) {
-      charPool += numbers;
-    }
-    if (includeSymbols) {
-      charPool += symbols;
-    }
-
-    if (charPool.isEmpty || length <= 0) {
-      throw ArgumentError('Invalid password options or length');
-    }
-
-    final random = Random();
-
-    return List.generate(
-        length, (index) => charPool[random.nextInt(charPool.length)]).join();
+  if (includeCapitals) {
+    charPool += upperCaseLetters;
+  }
+  if (includeNumbers) {
+    charPool += numbers;
+  }
+  if (includeSymbols) {
+    charPool += symbols;
   }
 
-  gnp(int length) {
-    length = 8;
-    String password = "";
-    String name = "Ganesh";
-    for (int i = 0; i < length; i++) {
-      print('===startgen==');
-      var random = Random();
+  // if (charPool.isEmpty || passwordLength <= 0) {
+  //   throw ArgumentError('Invalid password options or length');
+  // }
 
-      String generated = name[random.nextInt(name.length - 1)];
-      print(generated);
-      password += generated;
-      print('==current==');
-      print('passwordgen=$password\n\n');
+  //*  instance created
+  final Random random = Random();
+// make array list join
+  String generatePass = List.generate(integerValueLength,
+      (index) => charPool[random.nextInt(charPool.length)]).join();
+  return generatePass;
+}
+
+// !checkers
+
+String? passwordLengthValidation(String inputLength) {
+  int? changedInputInInt = int.tryParse(inputLength);
+
+  if (inputLength.isEmpty) {
+    return 'Empty?';
+  }
+  if (!RegExp(r'^\d+$').hasMatch(inputLength)) {
+    return 'Invalid: Not a Number,please enter integer number';
+  }
+
+  if (changedInputInInt == null) {
+    return 'null ';
+  } else {
+    if (changedInputInInt < 0) {
+      return 'less than 0';
     }
+    if (changedInputInInt < 8) {
+      return 'less than 8 must be atleast 8 character length';
+    }
+    if (changedInputInInt > 16) {
+      return 'must not be greater than 16 length characters';
+    }
+  }
+  return null;
+}
 
-    print("====generating random ====");
+checkAndValidatePasswordLength(String passwordLength, BuildContext context) {
+  String? errorcheck = passwordLengthValidation(passwordLength);
 
-    print(password);
+  final provider =
+      Provider.of<FormLiteralsValuesProvider>(context, listen: false);
+
+  if (errorcheck == null) {
+    provider.changePasswordStatus(true, '', passwordLength);
+  } else if (errorcheck == "Empty?") {
+    provider.changePasswordStatus(false, '', '0');
+  } else {
+    provider.changePasswordStatus(false, errorcheck, passwordLength);
+  }
+}
+
+checkAndCreatePassWord(BuildContext context) {
+  final providerWatch =
+      Provider.of<FormLiteralsValuesProvider>(context, listen: false);
+  bool isPasswordStatusValid =
+      providerWatch.getpasswordStatus['is_status_valid'] as bool;
+  bool isPasswordGenerated =
+      providerWatch.getpasswordStatus['is_password_generated'] as bool;
+  Map<String, dynamic> passwordOptions = providerWatch.getPasswordOptions;
+
+  if (!isPasswordGenerated) {
+    if (isPasswordStatusValid) {
+      String generatePass = generatePassword(
+        passwordOptions['include_small_letters'],
+        passwordOptions['include_capital_letters'],
+        passwordOptions['include_symbols'],
+        passwordOptions['include_numbers'],
+        providerWatch.getPasswordLength,
+      );
+      providerWatch.setPassword(generatePass, true);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Invalid Inputs!')),
+      );
+    }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Password already generated!')),
+    );
   }
 }

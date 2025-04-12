@@ -30,24 +30,3 @@ String? passwordValidation(String password) {
   }
   return null;
 }
-
-String? checkPasswordLength(String inputLength) {
-  int? parsingInt = int.tryParse(inputLength);
-  if (!RegExp(r'^\d$').hasMatch(inputLength)) {
-    return 'inValid Number';
-  }
-  if (parsingInt == null) {
-    return 'null ';
-  } else {
-    if (parsingInt < 0) {
-      return 'less than 0';
-    }
-    if (parsingInt < 8) {
-      return 'less than 8 must be atleast 8 character length';
-    }
-    if (parsingInt > 16) {
-      return 'must not be greater than 16 length characters';
-    }
-  }
-  return null;
-}
