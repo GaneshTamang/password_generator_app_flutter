@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:password_generator_app/c_constants.dart';
 
+import 'package:password_generator_app/providers/form_literals_value.dart';
+
+
+
 class ThemedCardForPass extends StatelessWidget {
   const ThemedCardForPass({super.key});
 
@@ -48,7 +52,11 @@ class ThemedCardForPass extends StatelessWidget {
                   height: MediaQuery.of(context).size.height / 1000 * 40,
                 ),
                 Text(
-                  'hello world!!',
+
+                  context
+                      .watch<FormLiteralsValuesProvider>()
+                      .getpasswordStatus["generated_password"] as String,
+
                   style: cHeadingTextStyle,
                   // textAlign: TextAlign.center,
                 ),

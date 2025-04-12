@@ -1,9 +1,13 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:password_generator_app/custom_widgets/check_box_list_for_setting.dart';
 import 'package:password_generator_app/custom_widgets/themed_button.dart';
 import 'package:password_generator_app/custom_widgets/themed_card_for_pass.dart';
-// import 'package:password_generator_app/screens/second_page.dart';
+
 import 'package:password_generator_app/c_constants.dart';
+import 'package:password_generator_app/modules/passowd_gen_module.dart';
+
 import 'package:password_generator_app/providers/form_literals_value.dart';
 import 'package:provider/provider.dart';
 
@@ -12,19 +16,26 @@ class ThemedPassGeneratorAppBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool value = true;
+
+    Map<String, Object> provideWatchValues =
+        context.watch<FormLiteralsValuesProvider>().getpasswordStatus;
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus(); // Dismiss keyboard
       },
       child: Stack(
         children: [
-          BackGroundImage(), //stack image background
+          BackGroundImage(), //stack image background with color blending dark for nice view
           SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(height: 20),
+                Text(
+                  context.watch<FormLiteralsValuesProvider>().getPasswordLength,
+                  style: cHeadingTextStyle,
+                ),
+                // SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,15 +48,14 @@ class ThemedPassGeneratorAppBody extends StatelessWidget {
                     SizedBox(
                       width: 15,
                     ),
+                    //! text field
                     SizedBox(
                       width: 80,
                       height: 80,
                       child: TextField(
                         onChanged: (typedvalue) {
-                          debugPrint('typed value:$typedvalue');
-                          context
-                              .read<FormLiteralsValues>()
-                              .changeValue(typedvalue);
+                          print('typed value:$typedvalue');
+                          checkAndValidatePasswordLength(typedvalue, context);
                         },
                         decoration: cTextFieldDecoration,
                         style: TextStyle(color: Colors.white),
@@ -53,29 +63,54 @@ class ThemedPassGeneratorAppBody extends StatelessWidget {
                     )
                   ], //row children
                 ),
-                // Text(
-                //   '${context.watch<FormLiteralsValues>().getPasswordLength}', //action type watch data for change
-                //   style: cHeadingTextStyle.copyWith(
-                //     color: Colors.purple,
-                //     fontSize: 100,
-                //   ),
-                // ),
 
-                value
+                context
+                            .watch<FormLiteralsValuesProvider>()
+                            .getpasswordStatus['password_error'] as String ==
+                        ""
+                    ? SizedBox(
+                        width: MediaQuery.of(context).size.height / 1000 * 30,
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          context
+                              .watch<FormLiteralsValuesProvider>()
+                              .getpasswordStatus['password_error'] as String,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                (provideWatchValues["is_password_generated"] as bool)
                     ? ThemedCardForPass()
                     : SizedBox(
-                        height: MediaQuery.of(context).size.height / 1000 * 300,
-                        width: MediaQuery.of(context).size.width - 30,
-                        child: Image.asset('images/write.png'),
+                        height: MediaQuery.of(context).size.height / 1000 * 250,
+                        width: MediaQuery.of(context).size.width / 4,
+         child: Image.asset('images/write.png'),
                       ),
                 CheckBoxListForSetting(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ThemedButoon(
-                        buttonName: 'Generate Password', buttonFunction: () {}),
+
+                      buttonName: 'Generate Password',
+                      buttonFunction: () {
+                        checkAndCreatePassWord(context);
+                      },
+                    ),
                     ThemedButoon(
-                        buttonName: 'reset Password', buttonFunction: () {}),
+                        buttonName: 'reset Password',
+                        buttonFunction: () {
+                          context
+                              .read<FormLiteralsValuesProvider>()
+                              .resetPassword();
+                        }),
+
                   ],
                 )
               ], //column children for main body
